@@ -205,29 +205,63 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { passive: true });
     }
 
+    // ─── YouTube Thumbnail Loader ─────────────────────
+    document.querySelectorAll('.portfolio-card[data-youtube]').forEach(card => {
+        const ytId = card.dataset.youtube;
+        if (ytId && ytId !== 'YOUR_VIDEO_ID') {
+            const container = card.querySelector('.youtube-container');
+            if (!container) return;
+
+            // Remove placeholder and add YouTube thumbnail
+            const placeholder = container.querySelector('.youtube-placeholder');
+            if (placeholder) placeholder.remove();
+
+            const thumb = document.createElement('img');
+            thumb.className = 'youtube-thumb';
+            thumb.src = `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
+            thumb.alt = card.querySelector('h3')?.textContent || 'Video thumbnail';
+            thumb.loading = 'lazy';
+            container.insertBefore(thumb, container.firstChild);
+
+            // Add play overlay
+            const overlay = document.createElement('div');
+            overlay.className = 'card-overlay';
+            overlay.innerHTML = '<span class="card-play">▶</span>';
+            container.appendChild(overlay);
+        }
+    });
+
     // ─── Lightbox for Portfolio Items ─────────────────
     const lightboxModal = document.getElementById('lightboxModal');
     const lightboxContent = document.getElementById('lightboxContent');
     const lightboxClose = document.getElementById('lightboxClose');
 
     function openLightbox(card) {
-        const videoEl = card.querySelector('video source');
+        const ytId = card.dataset.youtube;
         const imgEl = card.querySelector('.image-container img');
 
         lightboxContent.innerHTML = '';
 
-        if (videoEl && videoEl.getAttribute('src')) {
-            const video = document.createElement('video');
-            video.src = videoEl.getAttribute('src');
-            video.controls = true;
-            video.autoplay = true;
-            video.style.width = '100%';
-            lightboxContent.appendChild(video);
+        if (ytId && ytId !== 'YOUR_VIDEO_ID') {
+            // YouTube embed
+            const iframe = document.createElement('iframe');
+            iframe.src = `https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0`;
+            iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+            iframe.allowFullscreen = true;
+            iframe.style.width = '90vw';
+            iframe.style.maxWidth = '1100px';
+            iframe.style.height = '50.625vw';
+            iframe.style.maxHeight = '619px';
+            iframe.style.borderRadius = '16px';
+            iframe.style.border = 'none';
+            lightboxContent.appendChild(iframe);
         } else if (imgEl) {
             const img = document.createElement('img');
             img.src = imgEl.getAttribute('src');
             img.alt = imgEl.getAttribute('alt') || '';
             lightboxContent.appendChild(img);
+        } else {
+            return; // No valid content
         }
 
         lightboxModal.classList.add('active');
@@ -237,12 +271,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function closeLightbox() {
         lightboxModal.classList.remove('active');
         document.body.style.overflow = '';
-        // Stop any playing video
-        const video = lightboxContent.querySelector('video');
-        if (video) {
-            video.pause();
-            video.src = '';
-        }
         setTimeout(() => { lightboxContent.innerHTML = ''; }, 400);
     }
 
@@ -261,20 +289,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'Escape' && lightboxModal.classList.contains('active')) {
             closeLightbox();
         }
-    });
-
-    // ─── Hover to preview videos in grid ─────────────
-    document.querySelectorAll('.video-container video').forEach(video => {
-        const card = video.closest('.portfolio-card');
-        if (!card) return;
-
-        card.addEventListener('mouseenter', () => {
-            video.play().catch(() => {});
-        });
-        card.addEventListener('mouseleave', () => {
-            video.pause();
-            video.currentTime = 0;
-        });
     });
 
     // ─── Cursor glow effect (desktop only) ───────────

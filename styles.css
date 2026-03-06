@@ -894,12 +894,36 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     inset: 0;
 }
 
-.video-container video[src=""],
-.video-container video:not([src]) {
-    display: none;
+/* YouTube embed container */
+.youtube-container {
+    position: relative;
+    background: var(--bg-secondary);
+    cursor: pointer;
 }
 
-.video-placeholder {
+.youtube-container iframe {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+    border: none;
+    border-radius: 0;
+}
+
+.youtube-container .youtube-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    inset: 0;
+    transition: transform 0.6s ease;
+}
+
+.portfolio-card:hover .youtube-thumb {
+    transform: scale(1.08);
+}
+
+.youtube-placeholder {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -910,12 +934,16 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     position: absolute;
     inset: 0;
     background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
-    border: 2px dashed rgba(123, 92, 255, 0.2);
-    border-radius: 0;
 }
 
-.video-container:has(video[src]:not([src=""])) .video-placeholder {
-    display: none;
+.youtube-placeholder .card-play {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.youtube-placeholder .placeholder-text {
+    font-size: 0.78rem;
+    color: var(--text-muted);
 }
 
 .placeholder-icon {
