@@ -83,18 +83,42 @@ document.addEventListener('DOMContentLoaded', () => {
         const iconOff = musicBtn.querySelector('.music-icon-off');
         const iconOn = musicBtn.querySelector('.music-icon-on');
 
-        musicBtn.addEventListener('click', () => {
+        const updateBtnState = () => {
             if (bgMusic.paused) {
-                bgMusic.play().then(() => {
-                    musicBtn.classList.add('playing');
-                    if (iconOff) iconOff.style.display = 'none';
-                    if (iconOn) iconOn.style.display = 'block';
-                }).catch(() => {});
-            } else {
-                bgMusic.pause();
                 musicBtn.classList.remove('playing');
                 if (iconOff) iconOff.style.display = 'block';
                 if (iconOn) iconOn.style.display = 'none';
+            } else {
+                musicBtn.classList.add('playing');
+                if (iconOff) iconOff.style.display = 'none';
+                if (iconOn) iconOn.style.display = 'block';
+            }
+        };
+
+        // Try autoplay
+        const tryPlay = () => {
+            const playPromise = bgMusic.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    updateBtnState();
+                }).catch(() => {
+                    // Autoplay blocked. We'll wait for user interaction to play
+                    document.body.addEventListener('click', function playOnInteract() {
+                        bgMusic.play().then(() => updateBtnState()).catch(() => {});
+                        document.body.removeEventListener('click', playOnInteract);
+                    }, { once: true });
+                });
+            }
+        };
+        tryPlay();
+
+        musicBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // prevent document.body click from triggering immediately if blocked
+            if (bgMusic.paused) {
+                bgMusic.play().then(() => updateBtnState()).catch(() => {});
+            } else {
+                bgMusic.pause();
+                updateBtnState();
             }
         });
     }
