@@ -393,12 +393,11 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     border-color: var(--accent);
 }
 
-/* Bento Grid */
+/* Video Grid */
 .portfolio-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-auto-rows: 280px;
-    gap: 12px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
 }
 
 .portfolio-item {
@@ -412,15 +411,12 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     position: absolute;
 }
 
-/* Featured items span 2 cols */
-.portfolio-item.featured { grid-column: span 2; grid-row: span 1; }
-
 .portfolio-card {
     position: relative;
     border-radius: var(--radius);
     overflow: hidden;
     background: var(--card);
-    height: 100%;
+    aspect-ratio: 16 / 9;
     cursor: pointer;
     transition: 0.35s var(--ease);
 }
@@ -839,15 +835,13 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     .hero-actions .btn { width: 100%; justify-content: center; }
 
     .portfolio-header { flex-direction: column; align-items: flex-start; }
-    .portfolio-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 220px; gap: 8px; }
-    .portfolio-item.featured { grid-column: span 2; }
+    .portfolio-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
 
     .contact-links { flex-direction: column; align-items: center; }
 }
 
 @media (max-width: 480px) {
-    .portfolio-grid { grid-template-columns: 1fr; grid-auto-rows: 240px; }
-    .portfolio-item.featured { grid-column: span 1; }
+    .portfolio-grid { grid-template-columns: 1fr; gap: 12px; }
     .tools-grid { grid-template-columns: 1fr; }
 }
 
