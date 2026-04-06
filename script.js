@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const iconOff = musicBtn.querySelector('.music-icon-off');
         const iconOn = musicBtn.querySelector('.music-icon-on');
 
-        const updateBtnState = () => {
+        window.syncMusicUI = () => {
             if (bgMusic.paused) {
                 musicBtn.classList.remove('playing');
                 if (iconOff) iconOff.style.display = 'block';
@@ -100,11 +100,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const playPromise = bgMusic.play();
             if (playPromise !== undefined) {
                 playPromise.then(() => {
-                    updateBtnState();
+                    window.syncMusicUI();
                 }).catch(() => {
                     // Autoplay blocked. We'll wait for user interaction to play
                     document.body.addEventListener('click', function playOnInteract() {
-                        bgMusic.play().then(() => updateBtnState()).catch(() => {});
+                        bgMusic.play().then(() => window.syncMusicUI()).catch(() => {});
                         document.body.removeEventListener('click', playOnInteract);
                     }, { once: true });
                 });
@@ -115,10 +115,10 @@ document.addEventListener('DOMContentLoaded', () => {
         musicBtn.addEventListener('click', (e) => {
             e.stopPropagation(); // prevent document.body click from triggering immediately if blocked
             if (bgMusic.paused) {
-                bgMusic.play().then(() => updateBtnState()).catch(() => {});
+                bgMusic.play().then(() => window.syncMusicUI()).catch(() => {});
             } else {
                 bgMusic.pause();
-                updateBtnState();
+                window.syncMusicUI();
             }
         });
     }
@@ -154,8 +154,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('lightboxModal');
     const content = document.getElementById('lightboxContent');
     const closeBtn = document.getElementById('lightboxClose');
+    let wasMusicPlaying = false;
 
     function open(card) {
+        if (window.bgMusic && !window.bgMusic.paused) {
+            wasMusicPlaying = true;
+            window.bgMusic.pause();
+            if(window.syncMusicUI) window.syncMusicUI();
+        } else {
+            wasMusicPlaying = false;
+        }
+
         const ytId = card.dataset.youtube;
         const imgEl = card.querySelector('.image-container img');
         content.innerHTML = '';
@@ -186,6 +195,12 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.classList.remove('active');
         document.body.style.overflow = '';
         setTimeout(() => { content.innerHTML = ''; }, 400);
+
+        if (wasMusicPlaying && window.bgMusic) {
+            window.bgMusic.play().then(() => {
+                if(window.syncMusicUI) window.syncMusicUI();
+            }).catch(()=>{});
+        }
     }
 
     document.querySelectorAll('.portfolio-card').forEach(card => {
