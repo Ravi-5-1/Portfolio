@@ -4,6 +4,26 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
+    /* ─── Render Dynamic Portfolio ──── */
+    const grid = document.getElementById('portfolioGrid');
+    if (grid && window.PORTFOLIO_DATA) {
+        PORTFOLIO_DATA.forEach(data => {
+            const itemHTML = `
+                <div class="portfolio-item animate-on-scroll" data-category="${data.category}">
+                    <div class="portfolio-card" ${data.type === 'youtube' ? `data-youtube="${data.id}"` : ''}>
+                        <div class="card-media ${data.type === 'youtube' ? 'youtube-container' : 'image-container'}">
+                            ${data.type === 'youtube' 
+                                ? '<div class="youtube-placeholder"><span class="card-play">▶</span></div>' 
+                                : `<img src="${data.id}" alt="${data.title}" loading="lazy">`}
+                        </div>
+                        <div class="card-info"><h3>${data.title}</h3><span class="card-category">${data.subtitle}</span></div>
+                    </div>
+                </div>
+            `;
+            grid.insertAdjacentHTML('beforeend', itemHTML);
+        });
+    }
+
     /* ─── Navigation ───────────────── */
     const navbar = document.getElementById('navbar');
     const toggle = document.getElementById('navToggle');

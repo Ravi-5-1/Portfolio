@@ -98,106 +98,8 @@
                 </div>
             </div>
 
-            <div class="portfolio-grid">
-
-                <!-- YouTube -->
-                <div class="portfolio-item animate-on-scroll" data-category="youtube">
-                    <div class="portfolio-card" data-youtube="IKVFXluMqYU">
-                        <div class="card-media youtube-container">
-                            <div class="youtube-placeholder"><span class="card-play">▶</span></div>
-                        </div>
-                        <div class="card-info"><h3>Brainrot Video</h3><span class="card-category">YouTube</span></div>
-                    </div>
-                </div>
-                <div class="portfolio-item animate-on-scroll" data-category="youtube">
-                    <div class="portfolio-card" data-youtube="bhlzwjCuRhg">
-                        <div class="card-media youtube-container">
-                            <div class="youtube-placeholder"><span class="card-play">▶</span></div>
-                        </div>
-                        <div class="card-info"><h3>Chaleya Lyrical</h3><span class="card-category">Lyrical Video</span></div>
-                    </div>
-                </div>
-                <div class="portfolio-item animate-on-scroll" data-category="youtube">
-                    <div class="portfolio-card" data-youtube="wG20GKVl7kU">
-                        <div class="card-media youtube-container">
-                            <div class="youtube-placeholder"><span class="card-play">▶</span></div>
-                        </div>
-                        <div class="card-info"><h3>Musical Vibe</h3><span class="card-category">Music Video</span></div>
-                    </div>
-                </div>
-                <div class="portfolio-item animate-on-scroll" data-category="youtube">
-                    <div class="portfolio-card" data-youtube="HNU_kgi25_g">
-                        <div class="card-media youtube-container">
-                            <div class="youtube-placeholder"><span class="card-play">▶</span></div>
-                        </div>
-                        <div class="card-info"><h3>Cinematic Edit</h3><span class="card-category">Cinematic</span></div>
-                    </div>
-                </div>
-
-                <!-- Reels -->
-                <div class="portfolio-item animate-on-scroll" data-category="motiongfx">
-                    <div class="portfolio-card" data-youtube="M-Rz8FalSYA">
-                        <div class="card-media youtube-container">
-                            <div class="youtube-placeholder"><span class="card-play">▶</span></div>
-                        </div>
-                        <div class="card-info"><h3>Motion Graphics 1</h3><span class="card-category">Motion Graphics</span></div>
-                    </div>
-                </div>
-                <div class="portfolio-item animate-on-scroll" data-category="motiongfx">
-                    <div class="portfolio-card" data-youtube="rVn6uRvept0">
-                        <div class="card-media youtube-container">
-                            <div class="youtube-placeholder"><span class="card-play">▶</span></div>
-                        </div>
-                        <div class="card-info"><h3>Motion Graphics 2</h3><span class="card-category">Motion Graphics</span></div>
-                    </div>
-                </div>
-
-                <!-- Color Grading -->
-                <div class="portfolio-item animate-on-scroll" data-category="colorgrade">
-                    <div class="portfolio-card" data-youtube="rdmVl1t_0H0">
-                        <div class="card-media youtube-container">
-                            <div class="youtube-placeholder"><span class="card-play">▶</span></div>
-                        </div>
-                        <div class="card-info"><h3>Close Up Shot</h3><span class="card-category">Color Grading</span></div>
-                    </div>
-                </div>
-                <div class="portfolio-item animate-on-scroll" data-category="colorgrade">
-                    <div class="portfolio-card" data-youtube="_oOSKPkbxeM">
-                        <div class="card-media youtube-container">
-                            <div class="youtube-placeholder"><span class="card-play">▶</span></div>
-                        </div>
-                        <div class="card-info"><h3>Lady Walking Shot</h3><span class="card-category">Color Grading</span></div>
-                    </div>
-                </div>
-
-                <!-- Blender Work -->
-                <div class="portfolio-item animate-on-scroll" data-category="blender">
-                    <div class="portfolio-card" data-youtube="WKdTSb-oOTg">
-                        <div class="card-media youtube-container">
-                            <div class="youtube-placeholder"><span class="card-play">▶</span></div>
-                        </div>
-                        <div class="card-info"><h3>Blender Animation</h3><span class="card-category">Blender</span></div>
-                    </div>
-                </div>
-
-                <!-- Graphic Design -->
-                <div class="portfolio-item animate-on-scroll" data-category="design">
-                    <div class="portfolio-card">
-                        <div class="card-media image-container">
-                            <img src="assets/images/GEHRA HUA (1).png" alt="Gehra Hua Poster" loading="lazy">
-                        </div>
-                        <div class="card-info"><h3>Gehra Hua</h3><span class="card-category">Poster Design</span></div>
-                    </div>
-                </div>
-                <div class="portfolio-item animate-on-scroll" data-category="design">
-                    <div class="portfolio-card">
-                        <div class="card-media image-container">
-                            <img src="assets/images/POPULAR (3).png" alt="Lose You to Love Me Poster" loading="lazy">
-                        </div>
-                        <div class="card-info"><h3>Lose You to Love Me</h3><span class="card-category">Poster Design</span></div>
-                    </div>
-                </div>
-
+            <div class="portfolio-grid" id="portfolioGrid">
+                <!-- Items are populated dynamically by script.js from portfolio-data.js -->
             </div>
         </div>
     </section>
@@ -291,6 +193,7 @@
         </svg>
     </button>
 
+    <script src="portfolio-data.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
