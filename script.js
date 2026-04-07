@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /* ─── Render Dynamic Portfolio ──── */
     const grid = document.getElementById('portfolioGrid');
-    if (grid && window.PORTFOLIO_DATA) {
+    if (grid && typeof PORTFOLIO_DATA !== 'undefined') {
         PORTFOLIO_DATA.forEach(data => {
             const itemHTML = `
                 <div class="portfolio-item animate-on-scroll" data-category="${data.category}">
