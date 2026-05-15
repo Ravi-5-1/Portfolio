@@ -31,6 +31,15 @@ const PORTFOLIO_DATA = [
     },
     // The Cinematic Edit was removed from here. To add it back, just add a block here.
 
+    // --- REELS ---
+    { 
+        category: "reels", 
+        type: "youtube", 
+        id: "aKV2y1Mcgr8", 
+        title: "Shorts Video", 
+        subtitle: "Reels" 
+    },
+
     // --- MOTION GRAPHICS ---
     { 
         category: "motiongfx", 
