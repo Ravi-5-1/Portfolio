@@ -36,7 +36,7 @@ const PORTFOLIO_DATA = [
         category: "reels", 
         type: "youtube", 
         id: "aKV2y1Mcgr8", 
-        title: "Shorts Video", 
+        title: "Goggles Transition", 
         subtitle: "Reels" 
     },
 
