@@ -40,6 +40,15 @@ const PORTFOLIO_DATA = [
         subtitle: "Reels" 
     },
 
+    // --- PODCAST EDITS ---
+    { 
+        category: "podcast", 
+        type: "youtube", 
+        id: "QFFNPqnBWjA", 
+        title: "Podcast Edit", 
+        subtitle: "Short-form Podcast" 
+    },
+
     // --- MOTION GRAPHICS ---
     { 
         category: "motiongfx", 
