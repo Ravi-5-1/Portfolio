@@ -18,9 +18,9 @@ const PORTFOLIO_DATA = [
     { 
         category: "youtube", 
         type: "youtube", 
-        id: "bhlzwjCuRhg", 
-        title: "Chaleya Lyrical (Incomplete)", 
-        subtitle: "2-3 Months Ago Render (Render Pending)" 
+        id: "ocPJkbNXQxE", 
+        title: "Chaleya Lyrical", 
+        subtitle: "Lyrical Video" 
     },
     { 
         category: "youtube", 
