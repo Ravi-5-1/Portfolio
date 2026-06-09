@@ -71,6 +71,20 @@ const PORTFOLIO_DATA = [
         title: "Lady Walking Shot", 
         subtitle: "Color Grading" 
     },
+    { 
+        category: "colorgrade", 
+        type: "youtube", 
+        id: "iTSkQas_yZg", 
+        title: "Cinematic Grade 1", 
+        subtitle: "Color Grading" 
+    },
+    { 
+        category: "colorgrade", 
+        type: "youtube", 
+        id: "KXCOxgeDenw", 
+        title: "Cinematic Grade 2", 
+        subtitle: "Color Grading" 
+    },
 
     // --- BLENDER ---
     { 
