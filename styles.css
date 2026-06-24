@@ -1185,3 +1185,51 @@ body.has-custom-cursor:hover .cursor-glow {
     }
 }
 
+/* Hero Cinematic Particle Canvas */
+.hero-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Ambient slow-pulsing light leak in hero background */
+.hero-light-leak {
+    position: absolute;
+    top: -20%;
+    right: -20%;
+    width: 80%;
+    height: 80%;
+    background: radial-gradient(circle, rgba(212, 168, 67, 0.08) 0%, rgba(212, 168, 67, 0) 70%);
+    z-index: 1;
+    pointer-events: none;
+    filter: blur(80px);
+    animation: hero-pulse-leak 14s ease-in-out infinite alternate;
+}
+
+@keyframes hero-pulse-leak {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0.5;
+    }
+    50% {
+        transform: translate(-8%, 4%) scale(1.12);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translate(4%, -4%) scale(0.95);
+        opacity: 0.4;
+    }
+}
+
+@media (hover: none) or (pointer: coarse) {
+    .hero-canvas,
+    .hero-light-leak {
+        display: none !important;
+    }
+}
+
+

@@ -377,4 +377,115 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, { passive: true });
     }
+
+    /* ─── Hero Cinematic Particles ─── */
+    const heroCanvas = document.getElementById('heroCanvas');
+    if (heroCanvas) {
+        const ctx = heroCanvas.getContext('2d');
+        let width = heroCanvas.width = heroCanvas.offsetWidth;
+        let height = heroCanvas.height = heroCanvas.offsetHeight;
+
+        window.addEventListener('resize', () => {
+            width = heroCanvas.width = heroCanvas.offsetWidth;
+            height = heroCanvas.height = heroCanvas.offsetHeight;
+        });
+
+        const particles = [];
+        const maxParticles = 55;
+
+        class Particle {
+            constructor() {
+                this.reset();
+                this.y = Math.random() * height; // Spread initially
+            }
+
+            reset() {
+                // Focus particles on the right half (from 40% width to 98% width)
+                this.x = (width * 0.40) + Math.random() * (width * 0.58);
+                this.y = height + 10;
+                this.size = Math.random() * 3.5 + 1.2; // subtle sizes
+                this.speedY = -(Math.random() * 0.5 + 0.15); // slow float
+                this.speedX = Math.random() * 0.2 - 0.1;
+                this.angle = Math.random() * Math.PI * 2;
+                this.angleSpeed = Math.random() * 0.015 - 0.0075;
+                
+                const gold = { r: 212, g: 168, b: 67 };
+                const white = { r: 242, g: 242, b: 240 };
+                const color = Math.random() > 0.4 ? gold : white;
+                this.r = color.r;
+                this.g = color.g;
+                this.b = color.b;
+                this.maxAlpha = Math.random() * 0.35 + 0.15;
+                this.alpha = 0;
+                this.fadeSpeed = Math.random() * 0.004 + 0.002;
+                this.state = 'fadein';
+            }
+
+            update() {
+                this.y += this.speedY;
+                this.angle += this.angleSpeed;
+                this.x += this.speedX + Math.sin(this.angle) * 0.12;
+
+                if (this.state === 'fadein') {
+                    this.alpha += this.fadeSpeed;
+                    if (this.alpha >= this.maxAlpha) {
+                        this.alpha = this.maxAlpha;
+                        this.state = 'active';
+                    }
+                } else if (this.y < height * 0.12) {
+                    this.state = 'fadeout';
+                }
+
+                if (this.state === 'fadeout') {
+                    this.alpha -= this.fadeSpeed * 1.5;
+                }
+
+                if (this.y < -10 || this.alpha <= 0 || this.x < 0 || this.x > width) {
+                    this.reset();
+                }
+
+                // Push away from custom cursor on hover
+                if (!isTouchDevice && typeof mouseX !== 'undefined' && typeof mouseY !== 'undefined') {
+                    const canvasRect = heroCanvas.getBoundingClientRect();
+                    const mx = mouseX - canvasRect.left;
+                    const my = mouseY - canvasRect.top;
+                    
+                    const dx = this.x - mx;
+                    const dy = this.y - my;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    const minDist = 130;
+                    if (dist < minDist) {
+                        const force = (minDist - dist) / minDist;
+                        this.x += (dx / dist) * force * 1.3;
+                        this.y += (dy / dist) * force * 1.3;
+                    }
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                const grad = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size * 1.8);
+                grad.addColorStop(0, `rgba(${this.r}, ${this.g}, ${this.b}, ${this.alpha})`);
+                grad.addColorStop(0.5, `rgba(${this.r}, ${this.g}, ${this.b}, ${this.alpha * 0.3})`);
+                grad.addColorStop(1, `rgba(${this.r}, ${this.g}, ${this.b}, 0)`);
+                ctx.fillStyle = grad;
+                ctx.arc(this.x, this.y, this.size * 1.8, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < maxParticles; i++) {
+            particles.push(new Particle());
+        }
+
+        const animateParticles = () => {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        };
+        animateParticles();
+    }
 });
