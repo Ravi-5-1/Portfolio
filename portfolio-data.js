@@ -35,6 +35,13 @@ const PORTFOLIO_DATA = [
     { 
         category: "reels", 
         type: "youtube", 
+        id: "WwOZC5wUUws", 
+        title: "Podcast Reel", 
+        subtitle: "Reels" 
+    },
+    { 
+        category: "reels", 
+        type: "youtube", 
         id: "aKV2y1Mcgr8", 
         title: "Goggles Transition", 
         subtitle: "Reels" 
