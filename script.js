@@ -61,24 +61,50 @@ document.addEventListener('DOMContentLoaded', () => {
     const filterBtns = document.querySelectorAll('.filter-btn');
     const items = document.querySelectorAll('.portfolio-item');
 
+    // Dynamic Category Counts
+    if (typeof PORTFOLIO_DATA !== 'undefined') {
+        const counts = {};
+        PORTFOLIO_DATA.forEach(data => {
+            counts[data.category] = (counts[data.category] || 0) + 1;
+        });
+        filterBtns.forEach(btn => {
+            const cat = btn.dataset.filter;
+            if (counts[cat]) {
+                btn.insertAdjacentHTML('beforeend', ` <sup>${counts[cat]}</sup>`);
+            }
+        });
+    }
+
     // On load, show only the first active filter's category
     function applyFilter(filter) {
+        let delay = 0;
         items.forEach(item => {
             const match = item.dataset.category === filter;
             if (match) {
+                if (item.hideTimeout) clearTimeout(item.hideTimeout);
+                if (item.showTimeout) clearTimeout(item.showTimeout);
+
                 item.style.display = '';
                 item.classList.remove('hidden');
-                requestAnimationFrame(() => {
+                
+                item.style.transition = 'opacity 0.4s var(--ease), transform 0.4s var(--ease)';
+                
+                item.showTimeout = setTimeout(() => {
                     item.style.opacity = '1';
-                    item.style.transform = 'scale(1)';
-                });
+                    item.style.transform = 'translateY(0) scale(1)';
+                }, delay);
+                delay += 60; // stagger reveal delay
             } else {
+                if (item.hideTimeout) clearTimeout(item.hideTimeout);
+                if (item.showTimeout) clearTimeout(item.showTimeout);
+
                 item.style.opacity = '0';
-                item.style.transform = 'scale(0.85)';
-                setTimeout(() => {
+                item.style.transform = 'translateY(15px) scale(0.94)';
+                
+                item.hideTimeout = setTimeout(() => {
                     item.style.display = 'none';
                     item.classList.add('hidden');
-                }, 350);
+                }, 300);
             }
         });
     }
@@ -250,6 +276,104 @@ document.addEventListener('DOMContentLoaded', () => {
         window.addEventListener('scroll', () => {
             if (window.scrollY < window.innerHeight) {
                 heroBg.style.transform = `scale(1.05) translateY(${window.scrollY * 0.12}px)`;
+            }
+        }, { passive: true });
+    }
+
+    /* ─── Custom Cursor, Glow, and Interactive Tilt ─── */
+    const cursorDot = document.querySelector('.custom-cursor-dot');
+    const cursorRing = document.querySelector('.custom-cursor-ring');
+    const cursorGlow = document.querySelector('.cursor-glow');
+    const scrollProgress = document.getElementById('scrollProgress');
+
+    let mouseX = 0;
+    let mouseY = 0;
+    let ringX = 0;
+    let ringY = 0;
+    let glowX = 0;
+    let glowY = 0;
+
+    // Detect touch device to disable desktop cursor effects
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+    if (!isTouchDevice && cursorDot && cursorRing) {
+        document.body.classList.add('has-custom-cursor');
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+
+            // Position dot instantly
+            cursorDot.style.left = `${mouseX}px`;
+            cursorDot.style.top = `${mouseY}px`;
+        });
+
+        // Smooth trailing animation loop for ring and background glow
+        const tick = () => {
+            ringX += (mouseX - ringX) * 0.15;
+            ringY += (mouseY - ringY) * 0.15;
+            cursorRing.style.left = `${ringX}px`;
+            cursorRing.style.top = `${ringY}px`;
+
+            if (cursorGlow) {
+                glowX += (mouseX - glowX) * 0.08;
+                glowY += (mouseY - glowY) * 0.08;
+                cursorGlow.style.left = `${glowX}px`;
+                cursorGlow.style.top = `${glowY}px`;
+            }
+
+            requestAnimationFrame(tick);
+        };
+        tick();
+
+        // Magnetic Cursor Hovers
+        const updateHoverables = () => {
+            const hoverables = document.querySelectorAll('a, button, .portfolio-card, .contact-pill, .filter-btn');
+            hoverables.forEach(el => {
+                if (el.dataset.cursorBound) return;
+                el.dataset.cursorBound = 'true';
+
+                el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+                el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+            });
+        };
+        updateHoverables();
+        window.updateCursorHoverables = updateHoverables;
+
+        // 3D Card Tilt Math
+        document.querySelectorAll('.portfolio-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const w = rect.width;
+                const h = rect.height;
+
+                const px = (x / w) * 2 - 1;
+                const py = (y / h) * 2 - 1;
+
+                const maxRotate = 8;
+                const rx = -py * maxRotate;
+                const ry = px * maxRotate;
+
+                card.style.transform = `perspective(1000px) rotateX(${rx}deg) rotateY(${ry}deg) scale3d(1.02, 1.02, 1.02)`;
+                card.style.setProperty('--x', `${x}px`);
+                card.style.setProperty('--y', `${y}px`);
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+            });
+        });
+    }
+
+    // Scroll progress line
+    if (scrollProgress) {
+        window.addEventListener('scroll', () => {
+            const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+            if (totalScroll > 0) {
+                const percent = (window.scrollY / totalScroll) * 100;
+                scrollProgress.style.width = `${percent}%`;
             }
         }, { passive: true });
     }
